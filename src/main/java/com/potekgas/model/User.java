@@ -22,12 +22,12 @@ public class User {
     @Column(name = "password")
     private String password;
     @Column(name = "status")
-    private Integer status;
+    private String status;
 
     public User() {
     }
 
-    public User(Integer id_user, String nama_user, String no_telp, String role, String username, String password, Integer status) {
+    public User(Integer id_user, String nama_user, String no_telp, String role, String username, String password, String status) {
         this.id_user = id_user;
         this.nama_user = nama_user;
         this.no_telp = no_telp;
@@ -85,11 +85,11 @@ public class User {
         this.password = password;
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 }

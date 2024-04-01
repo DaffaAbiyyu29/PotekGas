@@ -15,13 +15,13 @@ public class UserVo {
     }
 
     public UserVo(User user) {
-        this.id = id;
-        this.nama = nama;
-        this.no_telp = no_telp;
-        this.role = role;
-        this.username = username;
-        this.password = password;
-        this.status = status;
+        this.id = user.getId_user();
+        this.nama = user.getNama_user();
+        this.no_telp = user.getNo_telp();
+        this.role = user.getRole();
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.status = user.getStatus();
     }
 
     public int getId() {

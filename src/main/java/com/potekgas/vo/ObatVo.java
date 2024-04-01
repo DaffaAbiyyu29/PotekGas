@@ -6,7 +6,7 @@ public class ObatVo {
     private int id;
     private String namaObat;
     private String merk;
-    private Integer jenis;
+    private String jenis;
     private Float harga;
     private String keterangan;
 
@@ -46,11 +46,11 @@ public class ObatVo {
         this.merk = merk;
     }
 
-    public Integer getJenis() {
+    public String getJenis() {
         return jenis;
     }
 
-    public void setJenis(Integer jenis) {
+    public void setJenis(String jenis) {
         this.jenis = jenis;
     }
 

@@ -20,6 +20,11 @@ public class UserDaoImpl implements UserDao {
         List<UserVo> userVos = new ArrayList<>();
         for (User item : users) {
             UserVo userVo = new UserVo(item);
+            if("0".equals(userVo.getStatus())) {
+                userVo.setStatus("Tidak Aktif");
+            } else if("1".equals(userVo.getStatus())) {
+                userVo.setStatus("Aktif");
+            }
             userVos.add(userVo);
         }
         return userVos;

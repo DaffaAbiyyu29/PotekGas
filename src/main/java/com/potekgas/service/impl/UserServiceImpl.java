@@ -1,6 +1,7 @@
 package com.potekgas.service.impl;
 
 import com.potekgas.dao.UserDao;
+import com.potekgas.model.Obat;
 import com.potekgas.model.User;
 import com.potekgas.repository.UserRepository;
 import com.potekgas.response.DtoResponse;
@@ -11,7 +12,11 @@ import org.springframework.stereotype.Service;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Optional;
 
+import static com.potekgas.constant.ObatConstant.mDeleteFailed;
+import static com.potekgas.constant.ObatConstant.mDeleteSuccess;
+import static com.potekgas.constant.ObatConstant.mNotFound;
 import static com.potekgas.constant.UserConstant.*;
 
 @Service
@@ -58,6 +63,7 @@ public class UserServiceImpl implements UserService {
             // Enkripsi kata password sebelum disimpan
 /*            String encryptedPassword = hashPassword(user.getPassword());
             user.setPassword(encryptedPassword);*/
+            user.setStatus("1");
             userRepository.save(user);
             return new DtoResponse(200, user, mCreateSuccess);
         } catch (Exception e) {
@@ -73,7 +79,7 @@ public class UserServiceImpl implements UserService {
             return new DtoResponse(404, null, mNotFound);
         }
 
-        // Periksa email atau username ada dalam database
+        // Periksa username ada dalam database
         if (!existingUser.getUsername().equals(user.getUsername())) {
             // Validasi user duplikat ketika update
             for (User checkUser : userRepository.findAll()) {
@@ -101,15 +107,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public DtoResponse deleteUser(User user) {
-        User userData = userRepository.findById(user.getId_user()).orElseThrow();
-        if (userData != null) {
-            try {
-                userRepository.delete(user);
-                return new DtoResponse(200, userData, mDeleteSuccess);
-            } catch (Exception e) {
-                return new DtoResponse(500, userData, mDeleteFailed);
+        try {
+            Optional<User> optionalUser = userRepository.findById(user.getId_user());
+
+            if (optionalUser.isPresent()) {
+                User existingUser = optionalUser.get();
+
+                existingUser.setStatus("0");
+
+                User deleteUser = userRepository.save(existingUser);
+                return new DtoResponse(200, deleteUser, mDeleteSuccess);
+            } else {
+                return new DtoResponse(404, null, mNotFound);
             }
+        } catch (Exception e) {
+            return new DtoResponse(500, null, mDeleteFailed);
         }
-        return new DtoResponse(404, null, mNotFound);
     }
 }

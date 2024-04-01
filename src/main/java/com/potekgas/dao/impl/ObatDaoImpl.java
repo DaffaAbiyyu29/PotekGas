@@ -20,6 +20,11 @@ public class ObatDaoImpl implements ObatDao {
         List<ObatVo> obatVos = new ArrayList<>();
         for (Obat item : obats) {
             ObatVo obatVo = new ObatVo(item);
+            if("0".equals(obatVo.getJenis())) {
+                obatVo.setJenis("Tablet");
+            } else if("1".equals(obatVo.getJenis())) {
+                obatVo.setJenis("Kapsul");
+            }
             obatVos.add(obatVo);
         }
         return obatVos;

@@ -16,7 +16,7 @@ public class Obat {
     @Column(name = "merk_obat")
     private String merk_obat;
     @Column(name = "jenis_obat")
-    private Integer jenis_obat;
+    private String jenis_obat;
     @Column(name = "tgl_kadaluarsa")
     private Date tgl_kadaluarsa;
     @Column(name = "harga")
@@ -31,7 +31,7 @@ public class Obat {
     public Obat() {
     }
 
-    public Obat(Integer id_obat, String nama_obat, String merk_obat, Integer jenis_obat, Date tgl_kadaluarsa, Float harga, Integer stok, String keterangan, Integer status) {
+    public Obat(Integer id_obat, String nama_obat, String merk_obat, String jenis_obat, Date tgl_kadaluarsa, Float harga, Integer stok, String keterangan, Integer status) {
         this.id_obat = id_obat;
         this.nama_obat = nama_obat;
         this.merk_obat = merk_obat;
@@ -67,11 +67,11 @@ public class Obat {
         this.merk_obat = merk_obat;
     }
 
-    public Integer getJenis_obat() {
+    public String getJenis_obat() {
         return jenis_obat;
     }
 
-    public void setJenis_obat(Integer jenis_obat) {
+    public void setJenis_obat(String jenis_obat) {
         this.jenis_obat = jenis_obat;
     }
 
