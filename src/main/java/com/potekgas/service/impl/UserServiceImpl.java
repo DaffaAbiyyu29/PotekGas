@@ -29,22 +29,22 @@ public class UserServiceImpl implements UserService {
         return new DtoResponse(200, null, mEmptyData);
     }
 
-    public String hashPassword(String password) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] encodedHash = digest.digest(password.getBytes());
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : encodedHash) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+//    public String hashPassword(String password) {
+//        try {
+//            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+//            byte[] encodedHash = digest.digest(password.getBytes());
+//            StringBuilder hexString = new StringBuilder();
+//            for (byte b : encodedHash) {
+//                String hex = Integer.toHexString(0xff & b);
+//                if (hex.length() == 1) hexString.append('0');
+//                hexString.append(hex);
+//            }
+//            return hexString.toString();
+//        } catch (NoSuchAlgorithmException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
 
     @Override
     public DtoResponse saveUser(User user) {
@@ -56,8 +56,8 @@ public class UserServiceImpl implements UserService {
         }
         try {
             // Enkripsi kata password sebelum disimpan
-            String encryptedPassword = hashPassword(user.getPassword());
-            user.setPassword(encryptedPassword);
+/*            String encryptedPassword = hashPassword(user.getPassword());
+            user.setPassword(encryptedPassword);*/
             userRepository.save(user);
             return new DtoResponse(200, user, mCreateSuccess);
         } catch (Exception e) {
@@ -84,11 +84,11 @@ public class UserServiceImpl implements UserService {
         }
         try {
             // Enkripsi kata password jika ada perubahan kata sandi
-            String existingPassword = userRepository.findById(user.getId_user()).map(User::getPassword).orElse(null);
+            /*String existingPassword = userRepository.findById(user.getId_user()).map(User::getPassword).orElse(null);
             if (existingPassword != null && !existingPassword.equals(user.getPassword())) {
                 String encryptedPassword = hashPassword(user.getPassword());
                 user.setPassword(encryptedPassword);
-            }
+            }*/
             User updatedUser = userRepository.save(user);
             if (updatedUser != null)
                 return new DtoResponse(200, updatedUser, mUpdateSuccess);
