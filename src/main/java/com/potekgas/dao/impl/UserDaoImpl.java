@@ -21,7 +21,7 @@ public class UserDaoImpl implements UserDao {
         for (User item : users) {
             UserVo userVo = new UserVo(item);
             if("1".equals(userVo.getRole())) {
-                userVo.setRole("Adminn");
+                userVo.setRole("Admin");
             } else if("2".equals(userVo.getRole())) {
                 userVo.setRole("Kasir");
             }
