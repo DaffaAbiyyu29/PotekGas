@@ -9,6 +9,7 @@ public class ObatVo {
     private String jenis;
     private Float harga;
     private String keterangan;
+    private String status;
 
     public ObatVo() {
     }
@@ -20,6 +21,7 @@ public class ObatVo {
         this.jenis = obat.getJenis_obat();
         this.harga = obat.getHarga();
         this.keterangan = obat.getKeterangan();
+        this.status = obat.getStatus().toString();
     }
 
     public int getId() {
@@ -68,5 +70,13 @@ public class ObatVo {
 
     public void setKeterangan(String keterangan) {
         this.keterangan = keterangan;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ObatDao {
     List<ObatVo> getAllObat();
+    List<ObatVo> getObatActive();
+    List<ObatVo> getObatById(int id);
 }

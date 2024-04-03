@@ -22,8 +22,21 @@ public class UserRest {
         return userService.getAllUsers();
     }
 
+    @GetMapping("/getUserActive")
+    public DtoResponse getUserActive() {
+        return userService.getUserActive();
+    }
+
+    @GetMapping("/getUser/{id}")
+    public DtoResponse getUserById(@PathVariable int id)
+    {
+        return userService.getUserById(id);
+    }
+
     @PostMapping("/saveUser")
-    public DtoResponse createUser(@RequestBody User user) { return userService.saveUser(user); }
+    public DtoResponse saveUser(@RequestBody User user){
+        return userService.saveUser(user);
+    }
 
     @PostMapping("/updateUser")
     public DtoResponse updateUser(@RequestBody User user) { return userService.updateUser(user); }

@@ -5,6 +5,8 @@ import com.potekgas.response.DtoResponse;
 
 public interface UserService {
     DtoResponse getAllUsers();
+    DtoResponse getUserActive();
+    DtoResponse getUserById(int id);
     DtoResponse saveUser(User user);
     DtoResponse updateUser(User user);
     DtoResponse deleteUser(User user);

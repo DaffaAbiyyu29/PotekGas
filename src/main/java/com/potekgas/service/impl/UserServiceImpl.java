@@ -17,9 +17,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
-import static com.potekgas.constant.ObatConstant.mDeleteFailed;
-import static com.potekgas.constant.ObatConstant.mDeleteSuccess;
-import static com.potekgas.constant.ObatConstant.mNotFound;
 import static com.potekgas.constant.UserConstant.*;
 
 @Service
@@ -40,7 +37,21 @@ public class UserServiceImpl implements UserService {
         return new DtoResponse(200, null, mEmptyData);
     }
 
-//    public String hashPassword(String password) {
+    @Override
+    public DtoResponse getUserActive() {
+        if (userDao.getUserActive() != null) return new DtoResponse(200, userDao.getUserActive());
+        return new DtoResponse(200, null, mEmptyData);
+    }
+
+    @Override
+    public DtoResponse getUserById(int id) {
+        if(userDao.getUserById(id) != null){
+            return new DtoResponse(200, userDao.getUserById(id));
+        }
+        return new DtoResponse(200, null, mEmptyData);
+    }
+
+    //    public String hashPassword(String password) {
 //        try {
 //            MessageDigest digest = MessageDigest.getInstance("SHA-256");
 //            byte[] encodedHash = digest.digest(password.getBytes());

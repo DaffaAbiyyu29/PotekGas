@@ -22,6 +22,17 @@ public class ObatRest {
         return obatService.getAllObat();
     }
 
+    @GetMapping("/getObatActive")
+    public DtoResponse getObatActive() {
+        return obatService.getObatActive();
+    }
+
+    @GetMapping("/getObat/{id}")
+    public DtoResponse getObatById(@PathVariable int id)
+    {
+        return obatService.getObatById(id);
+    }
+
     @PostMapping("/saveObat")
     public DtoResponse createObat(@RequestBody Obat obat) { return obatService.saveObat(obat); }
 

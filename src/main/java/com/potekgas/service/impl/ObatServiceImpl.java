@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 import static com.potekgas.constant.ObatConstant.*;
-import static com.potekgas.constant.UserConstant.mUpdateFailed;
-import static com.potekgas.constant.UserConstant.mUpdateSuccess;
 
 @Service
 @Transactional
@@ -28,6 +26,20 @@ public class ObatServiceImpl implements ObatService{
     @Override
     public DtoResponse getAllObat() {
         if (obatDao.getAllObat() != null) return new DtoResponse(200, obatDao.getAllObat());
+        return new DtoResponse(200, null, mEmptyData);
+    }
+
+    @Override
+    public DtoResponse getObatActive() {
+        if (obatDao.getObatActive() != null) return new DtoResponse(200, obatDao.getObatActive());
+        return new DtoResponse(200, null, mEmptyData);
+    }
+
+    @Override
+    public DtoResponse getObatById(int id) {
+        if(obatDao.getObatById(id) != null){
+            return new DtoResponse(200, obatDao.getObatById(id));
+        }
         return new DtoResponse(200, null, mEmptyData);
     }
 
