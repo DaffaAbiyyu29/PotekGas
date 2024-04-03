@@ -65,6 +65,18 @@ public class UserDaoImpl implements UserDao {
         List<UserVo> userVos = new ArrayList<>();
         userOptional.ifPresent(user -> {
             UserVo userVo = new UserVo(user);
+
+            if("1".equals(userVo.getRole())) {
+                userVo.setRole("Admin");
+            } else if("2".equals(userVo.getRole())) {
+                userVo.setRole("Kasir");
+            }
+
+            if("0".equals(userVo.getStatus())) {
+                userVo.setStatus("Tidak Aktif");
+            } else if("1".equals(userVo.getStatus())) {
+                userVo.setStatus("Aktif");
+            }
             userVos.add(userVo);
         });
         return userVos;
