@@ -8,8 +8,11 @@ import com.potekgas.response.DtoResponse;
 import com.potekgas.service.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.net.PasswordAuthentication;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
@@ -27,6 +30,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public DtoResponse getAllUsers() {
@@ -61,8 +67,8 @@ public class UserServiceImpl implements UserService {
         }
         try {
             // Enkripsi kata password sebelum disimpan
-/*            String encryptedPassword = hashPassword(user.getPassword());
-            user.setPassword(encryptedPassword);*/
+            String encryptedPassword = passwordEncoder.encode(user.getPassword());
+            user.setPassword(encryptedPassword);
             user.setStatus("1");
             userRepository.save(user);
             return new DtoResponse(200, user, mCreateSuccess);
@@ -122,6 +128,24 @@ public class UserServiceImpl implements UserService {
             }
         } catch (Exception e) {
             return new DtoResponse(500, null, mDeleteFailed);
+        }
+    }
+
+    @Override
+    public DtoResponse loginUser(User user) {
+        String msg = "";
+        User user1 = userRepository.findByUsername(user.getUsername());
+        if (user1 != null) {
+            String password = user.getPassword();
+            String encodedPassword = user1.getPassword();
+            boolean isPwdRight = passwordEncoder.matches(password, encodedPassword);
+            if (isPwdRight) {
+                return new DtoResponse(200, mLoginSuccess);
+            } else {
+                return new DtoResponse(404, mLoginFailed);
+            }
+        } else {
+            return new DtoResponse(500, mUsernameFailed);
         }
     }
 }

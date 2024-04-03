@@ -8,4 +8,5 @@ public interface UserService {
     DtoResponse saveUser(User user);
     DtoResponse updateUser(User user);
     DtoResponse deleteUser(User user);
+    DtoResponse loginUser(User user);
 }
