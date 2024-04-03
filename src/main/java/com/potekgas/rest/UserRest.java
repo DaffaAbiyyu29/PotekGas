@@ -33,6 +33,16 @@ public class UserRest {
         return userService.getUserById(id);
     }
 
+    @GetMapping("/countAdmin")
+    public DtoResponse countAdmin() {
+        return userService.countAdmin();
+    }
+
+    @GetMapping("/countKasir")
+    public DtoResponse countKasir() {
+        return userService.countKasir();
+    }
+
     @PostMapping("/saveUser")
     public DtoResponse saveUser(@RequestBody User user){
         return userService.saveUser(user);

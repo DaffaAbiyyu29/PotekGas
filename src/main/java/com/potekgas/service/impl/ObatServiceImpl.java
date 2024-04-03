@@ -37,6 +37,11 @@ public class ObatServiceImpl implements ObatService{
     }
 
     @Override
+    public DtoResponse countObat() {
+        return new DtoResponse(200, obatDao.countObat());
+    }
+
+    @Override
     public DtoResponse getObatById(int id) {
         if(obatDao.getObatById(id) != null){
             return new DtoResponse(200, obatDao.getObatById(id));

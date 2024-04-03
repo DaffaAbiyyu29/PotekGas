@@ -5,7 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
@@ -14,4 +16,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     User findByUsername(String username);
     @Procedure(procedureName = "getUserActive")
     List<User> getUserActive();
+    @Procedure(procedureName = "countAdmin  ")
+    ArrayList countAdmin();
+    @Procedure(procedureName = "countKasir")
+    ArrayList countKasir();
 }

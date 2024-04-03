@@ -27,6 +27,11 @@ public class ObatRest {
         return obatService.getObatActive();
     }
 
+    @GetMapping("/countObat")
+    public DtoResponse countObat() {
+        return obatService.countObat();
+    }
+
     @GetMapping("/getObat/{id}")
     public DtoResponse getObatById(@PathVariable int id)
     {

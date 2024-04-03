@@ -159,4 +159,14 @@ public class UserServiceImpl implements UserService {
             return new DtoResponse(500, mUsernameFailed);
         }
     }
+
+    @Override
+    public DtoResponse countAdmin() {
+        return new DtoResponse(200, userDao.countAdmin());
+    }
+
+    @Override
+    public DtoResponse countKasir() {
+        return new DtoResponse(200, userDao.countKasir());
+    }
 }

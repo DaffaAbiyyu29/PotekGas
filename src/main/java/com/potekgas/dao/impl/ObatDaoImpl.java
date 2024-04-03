@@ -61,6 +61,11 @@ public class ObatDaoImpl implements ObatDao {
     }
 
     @Override
+    public ArrayList countObat() {
+        return obatRepository.countObat();
+    }
+
+    @Override
     public List<ObatVo> getObatById(int id) {
         Optional<Obat> userOptional = obatRepository.findById(id);
         List<ObatVo> obatVos = new ArrayList<>();

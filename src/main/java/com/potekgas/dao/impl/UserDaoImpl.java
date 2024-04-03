@@ -4,17 +4,20 @@ import com.potekgas.dao.UserDao;
 import com.potekgas.model.User;
 import com.potekgas.repository.UserRepository;
 import com.potekgas.vo.UserVo;
+import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class UserDaoImpl implements UserDao {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    EntityManager entityManager;
+
     @Override
     public List<UserVo> getAllUser() {
         Iterable<User> users = userRepository.findAll();
@@ -80,5 +83,15 @@ public class UserDaoImpl implements UserDao {
             userVos.add(userVo);
         });
         return userVos;
+    }
+
+    @Override
+    public ArrayList countAdmin() {
+        return userRepository.countAdmin();
+    }
+
+    @Override
+    public ArrayList countKasir() {
+        return userRepository.countKasir();
     }
 }
