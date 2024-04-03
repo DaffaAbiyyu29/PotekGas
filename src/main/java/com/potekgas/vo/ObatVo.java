@@ -2,6 +2,8 @@ package com.potekgas.vo;
 
 import com.potekgas.model.Obat;
 
+import java.util.Date;
+
 public class ObatVo {
     private int id;
     private String namaObat;
@@ -10,6 +12,8 @@ public class ObatVo {
     private Float harga;
     private String keterangan;
     private String status;
+    private Date tgl_kadaluarsa;
+    private Integer stok;
 
     public ObatVo() {
     }
@@ -22,6 +26,8 @@ public class ObatVo {
         this.harga = obat.getHarga();
         this.keterangan = obat.getKeterangan();
         this.status = obat.getStatus().toString();
+        this.tgl_kadaluarsa = obat.getTgl_kadaluarsa();
+        this.stok = obat.getStok();
     }
 
     public int getId() {
@@ -78,5 +84,21 @@ public class ObatVo {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Date getTgl_kadaluarsa() {
+        return tgl_kadaluarsa;
+    }
+
+    public void setTgl_kadaluarsa(Date tgl_kadaluarsa) {
+        this.tgl_kadaluarsa = tgl_kadaluarsa;
+    }
+
+    public Integer getStok() {
+        return stok;
+    }
+
+    public void setStok(Integer stok) {
+        this.stok = stok;
     }
 }
