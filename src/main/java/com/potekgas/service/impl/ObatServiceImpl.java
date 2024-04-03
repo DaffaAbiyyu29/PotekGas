@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 import static com.potekgas.constant.ObatConstant.*;
+import static com.potekgas.constant.UserConstant.mEmptyData;
 
 @Service
 @Transactional
@@ -45,6 +46,12 @@ public class ObatServiceImpl implements ObatService{
 
     @Override
     public DtoResponse saveObat(Obat obat) {
+        // validasi obat duplikat ketika create
+        for (Obat existingObat : obatRepository.findAll()) {
+            if (existingObat.getNama_obat().equals(obat.getNama_obat())) {
+                return new DtoResponse(400, null, mDuplicateObat);
+            }
+        }
         try {
             obat.setStatus(1);
             obatRepository.save(obat);
@@ -56,6 +63,20 @@ public class ObatServiceImpl implements ObatService{
 
     @Override
     public DtoResponse updateObat(Obat obat) {
+        // Cari obat yang sudah ada dalam database
+        Obat existingObat = obatRepository.findById(obat.getId_obat()).orElse(null);
+        if (existingObat == null) {
+            return new DtoResponse(404, null, mNotFound);
+        }
+
+        // Periksa nama obat ada dalam database
+        if (!existingObat.getNama_obat().equals(obat.getNama_obat())) {
+            for (Obat checkObat : obatRepository.findAll()) {
+                if (checkObat.getNama_obat().equals(obat.getNama_obat())) {
+                    return new DtoResponse(400, null, mDuplicateObat);
+                }
+            }
+        }
         try {
             Obat updatedObat = obatRepository.save(obat);
             if (updatedObat != null)

@@ -1,7 +1,7 @@
 package com.potekgas.constant;
 
 public class ObatConstant {
-//    public static final String mDuplicateUser = "Username has been registered";
+    public static final String mDuplicateObat = "Name of the medicine has been registered";
     public static final String mNotFound = "Obat not found";
     public static final String mEmptyData = "No data available";
     public static final String mCreateSuccess = "Obat created successfully";
