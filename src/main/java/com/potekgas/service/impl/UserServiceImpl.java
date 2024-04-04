@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.net.PasswordAuthentication;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Optional;
+import java.util.*;
 
 import static com.potekgas.constant.UserConstant.*;
 
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public DtoResponse getUserById(int id) {
-        if(userDao.getUserById(id) != null){
+        if (userDao.getUserById(id) != null) {
             return new DtoResponse(200, userDao.getUserById(id));
         }
         return new DtoResponse(200, null, mEmptyData);
@@ -144,19 +144,33 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public DtoResponse loginUser(User user) {
-        String msg = "";
-        User user1 = userRepository.findByUsername(user.getUsername());
-        if (user1 != null) {
-            String password = user.getPassword();
-            String encodedPassword = user1.getPassword();
-            boolean isPwdRight = passwordEncoder.matches(password, encodedPassword);
-            if (isPwdRight) {
-                return new DtoResponse(200, mLoginSuccess);
+        try {
+            String msg = "";
+            if (user.getUsername().isBlank() || user.getPassword().isBlank()) {
+                return new DtoResponse(404, null, mBlank);
             } else {
-                return new DtoResponse(404, mLoginFailed);
+                User user1 = userRepository.findByUsername(user.getUsername());
+                if (user1 != null) {
+                    String password = user.getPassword();
+                    String encodedPassword = user1.getPassword();
+                    boolean isPwdRight = passwordEncoder.matches(password, encodedPassword);
+                    if (isPwdRight) {
+                        List<Map<String, String>> result = new ArrayList<>();
+
+                        Map<String, String> userMap = new HashMap<>();
+                        userMap.put("username", user1.getUsername());
+                        userMap.put("role", user1.getRole());
+                        result.add(userMap);
+                        return new DtoResponse(200, result, mLoginSuccess);
+                    } else {
+                        return new DtoResponse(500, null, mPasswordFailed);
+                    }
+                } else {
+                    return new DtoResponse(404, null, mUsernameFailed);
+                }
             }
-        } else {
-            return new DtoResponse(500, mUsernameFailed);
+        } catch (Exception e) {
+            return new DtoResponse(500, null, mLoginFailed);
         }
     }
 

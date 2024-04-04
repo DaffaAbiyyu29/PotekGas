@@ -14,6 +14,7 @@ public class UserConstant {
     public static final String mLoginSuccess = "Login Success";
     public static final String mPasswordFailed = "Password Not Match";
     public static final String mUsernameFailed = "Username not Exits";
+    public static final String mBlank = "Please Insert the Username and Password";
 
 
 
