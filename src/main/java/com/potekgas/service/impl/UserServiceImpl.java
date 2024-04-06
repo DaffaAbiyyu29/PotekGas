@@ -158,7 +158,8 @@ public class UserServiceImpl implements UserService {
                         List<Map<String, String>> result = new ArrayList<>();
 
                         Map<String, String> userMap = new HashMap<>();
-                        userMap.put("username", user1.getUsername());
+                        userMap.put("id", user1.getId_user().toString());
+                        userMap.put("name", user1.getNama_user());
                         userMap.put("role", user1.getRole());
                         result.add(userMap);
                         return new DtoResponse(200, result, mLoginSuccess);
@@ -182,5 +183,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public DtoResponse countKasir() {
         return new DtoResponse(200, userDao.countKasir());
+    }
+
+    @Override
+    public DtoResponse findUserById(int id) {
+        if (userDao.findUserById(id) != null) return new DtoResponse(200, userDao.findUserById(id));
+        return new DtoResponse(200, null, mEmptyData);
     }
 }

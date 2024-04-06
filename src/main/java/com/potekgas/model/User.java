@@ -2,8 +2,6 @@ package com.potekgas.model;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
-
 @Entity
 @Table(name = "ms_user")
 public class User {

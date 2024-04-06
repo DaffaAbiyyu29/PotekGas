@@ -1,11 +1,14 @@
 package com.potekgas.rest;
 
+import com.potekgas.constant.UserConstant;
 import com.potekgas.model.User;
 import com.potekgas.response.DtoResponse;
 import com.potekgas.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -30,6 +33,11 @@ public class UserRest {
     @GetMapping("/getUser/{id}")
     public DtoResponse getUserById(@PathVariable int id)
     {
+        return userService.getUserById(id);
+    }
+
+    @GetMapping("/getUser")
+    public DtoResponse getUser(@RequestParam("id") int id) {
         return userService.getUserById(id);
     }
 

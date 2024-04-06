@@ -7,6 +7,7 @@ public interface UserService {
     DtoResponse getAllUsers();
     DtoResponse getUserActive();
     DtoResponse getUserById(int id);
+    DtoResponse findUserById(int id);
     DtoResponse countAdmin();
     DtoResponse countKasir();
     DtoResponse saveUser(User user);

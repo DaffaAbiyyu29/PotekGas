@@ -94,4 +94,9 @@ public class UserDaoImpl implements UserDao {
     public ArrayList countKasir() {
         return userRepository.countKasir();
     }
+
+    @Override
+    public User findUserById(int id) {
+        return userRepository.findUserById(id);
+    }
 }
