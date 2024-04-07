@@ -24,7 +24,7 @@ public class PembelianRest {
         return pembelianService.getAllPembelian();
     }
 
-    @PostMapping("/saveUser")
+    @PostMapping("/savePembelian")
     public DtoResponse savePembelian(@RequestBody PembelianVo pembelianVo){
         return pembelianService.savePembelian(pembelianVo);
     }

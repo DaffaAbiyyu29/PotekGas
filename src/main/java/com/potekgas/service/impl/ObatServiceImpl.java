@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 import static com.potekgas.constant.ObatConstant.*;
-import static com.potekgas.constant.UserConstant.mEmptyData;
 
 @Service
 @Transactional
