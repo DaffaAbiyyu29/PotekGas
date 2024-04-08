@@ -1,8 +1,10 @@
 package com.potekgas.vo;
 
+import com.potekgas.model.DetailPembelian;
 import com.potekgas.model.Pembelian;
 
 import java.util.Date;
+import java.util.Optional;
 
 public class PembelianVo {
     private Integer idTransaksi;

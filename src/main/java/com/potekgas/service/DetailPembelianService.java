@@ -6,5 +6,6 @@ import com.potekgas.vo.PembelianVo;
 
 public interface DetailPembelianService {
     DtoResponse getAllDetailPembelian();
+    DtoResponse findDetailPembelianByTrsId(int id);
     DtoResponse saveDetailPembelian(DetailPembelianVo detailPembelianVo);
 }

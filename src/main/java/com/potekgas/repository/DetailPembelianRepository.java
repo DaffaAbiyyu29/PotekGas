@@ -1,11 +1,16 @@
 package com.potekgas.repository;
 
 import com.potekgas.model.DetailPembelian;
-import com.potekgas.model.Pembelian;
+import com.potekgas.model.DetailPembelianPK;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.query.Procedure;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface DetailPembelianRepository extends JpaRepository<DetailPembelian, Integer> {
+import java.util.List;
 
+@Repository
+public interface DetailPembelianRepository extends JpaRepository<DetailPembelian, DetailPembelianPK> {
+    @Procedure(name = "findDetailPembelianByTrsId")
+    Iterable<DetailPembelian> findDetailPembelianByTrsId(@Param("id") int id);
 }

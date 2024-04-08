@@ -35,6 +35,12 @@ public class DetailPembelianServiceImpl implements DetailPembelianService {
     }
 
     @Override
+    public DtoResponse findDetailPembelianByTrsId(int id) {
+        if (detailPembelianDao.findDetailPembelianByTrsId(id) != null) return new DtoResponse(200, detailPembelianDao.findDetailPembelianByTrsId(id));
+        return new DtoResponse(200, null, mEmptyData);
+    }
+
+    @Override
     public DtoResponse saveDetailPembelian(DetailPembelianVo detailPembelianVo) {
         try {
             DetailPembelianPK detailPembelianPK = new DetailPembelianPK();

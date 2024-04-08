@@ -24,6 +24,11 @@ public class PembelianRest {
         return pembelianService.getAllPembelian();
     }
 
+    @GetMapping("/getPembelians/{id}")
+    public DtoResponse getPembelianById(@PathVariable int id) {
+        return pembelianService.findPembelianByTrsId(id);
+    }
+
     @PostMapping("/savePembelian")
     public DtoResponse savePembelian(@RequestBody PembelianVo pembelianVo){
         return pembelianService.savePembelian(pembelianVo);

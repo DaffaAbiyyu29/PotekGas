@@ -14,10 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import static com.potekgas.constant.PembelianConstant.*;
+import static com.potekgas.constant.UserConstant.mEmptyData;
 
 @Service
 @Transactional
@@ -31,7 +33,10 @@ public class PembelianServiceImpl implements PembelianService {
 
     @Override
     public DtoResponse getAllPembelian() {
-        if (pembelianDao.getAllPembelian() != null) return new DtoResponse(200, pembelianDao.getAllPembelian());
+        List response = new ArrayList();
+        if (pembelianDao.getAllPembelian() != null) {
+            return new DtoResponse(200, pembelianDao.getAllPembelian());
+        }
         return new DtoResponse(200, null, mEmptyData);
     }
 
@@ -43,7 +48,7 @@ public class PembelianServiceImpl implements PembelianService {
             pembelianPK.setId_user(pembelianVo.getIdUser());
 
             List<PembelianVo> listData = pembelianDao.getAllPembelian();
-            if (listData.isEmpty()){
+            if (listData.isEmpty()) {
                 pembelianPK.setId_transaksi(1);
             } else {
                 PembelianVo lastData = listData.get(listData.size() - 1);
@@ -63,8 +68,16 @@ public class PembelianServiceImpl implements PembelianService {
 
             pembelianRepository.save(pembelian);
             return new DtoResponse(200, pembelian, mCreateSuccess);
-        } catch (Exception e){
+        } catch (Exception e) {
             return new DtoResponse(500, pembelianVo, mCreateFailed);
         }
+    }
+
+    @Override
+    public DtoResponse findPembelianByTrsId(int id) {
+        if (pembelianDao.findPembelianByTrsId(id) != null) {
+            return new DtoResponse(200, pembelianDao.findPembelianByTrsId(id));
+        }
+        return new DtoResponse(200, null, mEmptyData);
     }
 }

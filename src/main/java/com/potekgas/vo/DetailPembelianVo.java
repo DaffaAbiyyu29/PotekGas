@@ -6,8 +6,8 @@ import com.potekgas.model.Pembelian;
 import java.util.Date;
 
 public class DetailPembelianVo {
-    private Integer idDetail;
     private Integer idTransaksi;
+    private Integer idDetail;
     private Integer idObat;
     private String namaObat;
     private String deskripsiObat;
@@ -15,6 +15,20 @@ public class DetailPembelianVo {
     private Integer jumlah;
 
     public DetailPembelianVo() {
+    }
+
+    public DetailPembelianVo(Integer idTransaksi) {
+        this.idTransaksi = idTransaksi;
+    }
+
+    public DetailPembelianVo(Integer idTransaksi, Integer idDetail, Integer idObat, String namaObat, String deskripsiObat, Float hargaObat, Integer jumlah) {
+        this.idTransaksi = idTransaksi;
+        this.idDetail = idDetail;
+        this.idObat = idObat;
+        this.namaObat = namaObat;
+        this.deskripsiObat = deskripsiObat;
+        this.hargaObat = hargaObat;
+        this.jumlah = jumlah;
     }
 
     public DetailPembelianVo(DetailPembelian detailPembelian) {

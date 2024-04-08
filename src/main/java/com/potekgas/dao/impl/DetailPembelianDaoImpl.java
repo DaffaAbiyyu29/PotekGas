@@ -51,4 +51,31 @@ public class DetailPembelianDaoImpl implements DetailPembelianDao {
         }
         return detailPembelianVos;
     }
+
+    @Override
+    public List<DetailPembelianVo> findDetailPembelianByTrsId(int id) {
+//        return detailPembelianRepository.findDetailPembelianByTrsId(id);
+        Iterable<DetailPembelian> detailPembelians = detailPembelianRepository.findDetailPembelianByTrsId(id);
+        List<DetailPembelianVo> detailPembelianVos = new ArrayList<>();
+
+        for (DetailPembelian item : detailPembelians){
+            DetailPembelianVo detailPembelianVo = new DetailPembelianVo(item);
+
+            Obat obat = obatRepository.findById(detailPembelianVo.getIdObat()).orElse(null);
+            if (obat != null) {
+                detailPembelianVo.setNamaObat(obat.getNama_obat());
+                detailPembelianVo.setDeskripsiObat(obat.getKeterangan());
+                detailPembelianVo.setHargaObat(obat.getHarga());
+            }
+
+//            User user = userRepository.findById(detailPembelianVo.getDetailObat().getIdObat()).orElse(null);
+//            if (user != null) {
+//                detailPembelianVo.setIdUser(user.getId_user());
+//                detailPembelianVo.setIdUser(user.getId_user());
+//            }
+
+            detailPembelianVos.add(detailPembelianVo);
+        }
+        return detailPembelianVos;
+    }
 }

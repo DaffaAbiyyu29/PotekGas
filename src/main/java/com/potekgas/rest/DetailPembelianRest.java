@@ -23,6 +23,11 @@ public class DetailPembelianRest {
         return detailPembelianService.getAllDetailPembelian();
     }
 
+    @GetMapping("/getDetailPembelians/{id}")
+    public DtoResponse findDetailPembelianByTrsId(@PathVariable int id) {
+        return detailPembelianService.findDetailPembelianByTrsId(id);
+    }
+
     @PostMapping("/saveDetailPembelian")
     public DtoResponse savePembelian(@RequestBody DetailPembelianVo detailPembelianVo){
         return detailPembelianService.saveDetailPembelian(detailPembelianVo);
