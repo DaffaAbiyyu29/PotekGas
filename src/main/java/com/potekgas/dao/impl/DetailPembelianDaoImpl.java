@@ -78,4 +78,9 @@ public class DetailPembelianDaoImpl implements DetailPembelianDao {
         }
         return detailPembelianVos;
     }
+
+    @Override
+    public ArrayList findLastIdDetail() {
+        return detailPembelianRepository.findLastIdDetail();
+    }
 }

@@ -33,4 +33,14 @@ public class PembelianRest {
     public DtoResponse savePembelian(@RequestBody PembelianVo pembelianVo){
         return pembelianService.savePembelian(pembelianVo);
     }
+
+    @GetMapping("/countPembelian")
+    public DtoResponse countPembelian() {
+        return pembelianService.countPembelian();
+    }
+
+    @GetMapping("/getBestSellerObat")
+    public DtoResponse getBestSellerObat() {
+        return pembelianService.getBestSellerObat();
+    }
 }

@@ -80,4 +80,14 @@ public class PembelianServiceImpl implements PembelianService {
         }
         return new DtoResponse(200, null, mEmptyData);
     }
+
+    @Override
+    public DtoResponse countPembelian() {
+        return new DtoResponse(200, pembelianDao.countPembelian());
+    }
+
+    @Override
+    public DtoResponse getBestSellerObat() {
+        return new DtoResponse(200, pembelianDao.getBestSellerObat());
+    }
 }

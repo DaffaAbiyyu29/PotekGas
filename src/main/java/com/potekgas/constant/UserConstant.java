@@ -2,6 +2,7 @@ package com.potekgas.constant;
 
 public class UserConstant {
     public static final String mDuplicateUser = "Username has been registered";
+    public static final String mNullReq = "Please Input All Columns";
     public static final String mNotFound = "User not found";
     public static final String mEmptyData = "No data available";
     public static final String mCreateSuccess = "User created successfully";

@@ -7,6 +7,8 @@ import com.potekgas.vo.PembelianVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/detailPembelian")
@@ -29,7 +31,7 @@ public class DetailPembelianRest {
     }
 
     @PostMapping("/saveDetailPembelian")
-    public DtoResponse savePembelian(@RequestBody DetailPembelianVo detailPembelianVo){
+    public DtoResponse savePembelian(@RequestBody List<DetailPembelianVo> detailPembelianVo){
         return detailPembelianService.saveDetailPembelian(detailPembelianVo);
     }
 }

@@ -71,6 +71,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public DtoResponse saveUser(User user) {
         // validasi user duplikat ketika create
+        if (user == null || user.getUsername() == null || user.getPassword() == null ||
+                user.getUsername().isEmpty() || user.getPassword().isEmpty()) {
+            return new DtoResponse(400, null, mNullReq);
+        }
+
         for (User existingUser : userRepository.findAll()) {
             if (existingUser.getUsername().equals(user.getUsername())) {
                 return new DtoResponse(400, null, mDuplicateUser);

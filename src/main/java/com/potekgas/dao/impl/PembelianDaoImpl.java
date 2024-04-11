@@ -49,4 +49,14 @@ public class PembelianDaoImpl implements PembelianDao {
     public List<Pembelian> findPembelianByTrsId(int id) {
         return pembelianRepository.findPembelianByTrsId(id);
     }
+
+    @Override
+    public ArrayList countPembelian() {
+        return pembelianRepository.countPembelian();
+    }
+
+    @Override
+    public ArrayList getBestSellerObat() {
+        return pembelianRepository.getBestSellerObat();
+    }
 }
