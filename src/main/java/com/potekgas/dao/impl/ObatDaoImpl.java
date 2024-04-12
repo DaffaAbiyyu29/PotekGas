@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +34,12 @@ public class ObatDaoImpl implements ObatDao {
             } else if ("1".equals(obatVo.getStatus())) {
                 obatVo.setStatus("Aktif");
             }
+
+            if (item.getId_obat() != null) {
+                String gambar = "http://localhost:8083/obats/gambar/" + item.getId_obat();
+                obatVo.setGambar(gambar);
+            }
+
             obatVos.add(obatVo);
         }
         return obatVos;

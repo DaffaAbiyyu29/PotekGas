@@ -1,11 +1,17 @@
 package com.potekgas.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Entity
 @Table(name = "ms_obat")
+//@Data
+//@Builder
 public class Obat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +33,9 @@ public class Obat {
     private String keterangan;
     @Column(name = "status")
     private Integer status;
+    @Lob
+    @Column(name = "gambar", length = Integer.MAX_VALUE, nullable = true)
+    private byte[] gambar;
 
     public Obat() {
     }
@@ -41,6 +50,18 @@ public class Obat {
         this.stok = stok;
         this.keterangan = keterangan;
         this.status = status;
+    }
+
+    public Obat(String nama_obat, String merk_obat, String jenis_obat, Date tgl_kadaluarsa, Float harga, Integer stok, String keterangan, Integer status, byte[] gambar) {
+        this.nama_obat = nama_obat;
+        this.merk_obat = merk_obat;
+        this.jenis_obat = jenis_obat;
+        this.tgl_kadaluarsa = tgl_kadaluarsa;
+        this.harga = harga;
+        this.stok = stok;
+        this.keterangan = keterangan;
+        this.status = status;
+        this.gambar = gambar;
     }
 
     public Integer getId_obat() {
@@ -113,5 +134,13 @@ public class Obat {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public byte[] getGambar() {
+        return gambar;
+    }
+
+    public void setGambar(byte[] gambar) {
+        this.gambar = gambar;
     }
 }

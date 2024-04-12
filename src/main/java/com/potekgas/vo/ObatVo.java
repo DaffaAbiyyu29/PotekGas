@@ -2,6 +2,7 @@ package com.potekgas.vo;
 
 import com.potekgas.model.Obat;
 
+import java.util.Base64;
 import java.util.Date;
 
 public class ObatVo {
@@ -14,6 +15,7 @@ public class ObatVo {
     private String status;
     private Date tgl_kadaluarsa;
     private Integer stok;
+    private String gambar;
 
     public ObatVo() {
     }
@@ -28,6 +30,15 @@ public class ObatVo {
         this.status = obat.getStatus().toString();
         this.tgl_kadaluarsa = obat.getTgl_kadaluarsa();
         this.stok = obat.getStok();
+
+//        if (obat.getGambarUrl() != null) {
+//            this.gambarUrl = Base64.getEncoder().encodeToString(obat.getGambarUrl());
+//        }
+
+        if (obat.getGambar() != null) {
+//                        this.gambar = Base64.getEncoder().encodeToString(obat.getGambar());
+            this.gambar = "obats/gambarUrl/" + obat.getId_obat(); // Sesuaikan dengan URL yang digunakan untuk menyimpan gambarUrl
+        }
     }
 
     public int getId() {
@@ -100,5 +111,13 @@ public class ObatVo {
 
     public void setStok(Integer stok) {
         this.stok = stok;
+    }
+
+    public String getGambar() {
+        return gambar;
+    }
+
+    public void setGambar(String gambar) {
+        this.gambar = gambar;
     }
 }
