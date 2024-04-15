@@ -2,6 +2,7 @@ package com.potekgas.service;
 
 import com.potekgas.model.User;
 import com.potekgas.response.DtoResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
     DtoResponse getAllUsers();
@@ -10,8 +11,9 @@ public interface UserService {
     DtoResponse findUserById(int id);
     DtoResponse countAdmin();
     DtoResponse countKasir();
-    DtoResponse saveUser(User user);
-    DtoResponse updateUser(User user);
+    DtoResponse saveUser(String namaUser, String noTelp, Integer role, String username, String password, Integer status, MultipartFile foto);
+    DtoResponse updateUser(Integer idUser, String namaUser, String noTelp, Integer role, String username, String password, Integer status, MultipartFile foto);
     DtoResponse deleteUser(User user);
     DtoResponse loginUser(User user);
+    public byte[] getGambarById(int id);
 }

@@ -1,6 +1,7 @@
 package com.potekgas.vo;
 
 import com.potekgas.model.User;
+import org.springframework.web.multipart.MultipartFile;
 
 public class UserVo {
     private int id;
@@ -10,6 +11,7 @@ public class UserVo {
     private String username;
     private String password;
     private String status;
+    private String foto;
 
     public UserVo(){
     }
@@ -18,10 +20,15 @@ public class UserVo {
         this.id = user.getId_user();
         this.nama = user.getNama_user();
         this.no_telp = user.getNo_telp();
-        this.role = user.getRole();
+        this.role = user.getRole().toString();
         this.username = user.getUsername();
         this.password = user.getPassword();
-        this.status = user.getStatus();
+        this.status = user.getStatus().toString();
+
+        if (user.getFoto() != null) {
+//                        this.foto = Base64.getEncoder().encodeToString(user.getGambar());
+            this.foto = "users/fotoUrl/" + user.getId_user(); // Sesuaikan dengan URL yang digunakan untuk menyimpan fotoUrl
+        }
     }
 
     public int getId() {
@@ -78,5 +85,13 @@ public class UserVo {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 }

@@ -62,6 +62,12 @@ public class ObatDaoImpl implements ObatDao {
             } else if ("1".equals(obatVo.getStatus())) {
                 obatVo.setStatus("Aktif");
             }
+
+            if (item.getId_obat() != null) {
+                String gambar = "http://localhost:8083/obats/gambar/" + item.getId_obat();
+                obatVo.setGambar(gambar);
+            }
+
             obatVos.add(obatVo);
         }
         return obatVos;

@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.net.PasswordAuthentication;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -69,58 +71,88 @@ public class UserServiceImpl implements UserService {
 //    }
 
     @Override
-    public DtoResponse saveUser(User user) {
+    public DtoResponse saveUser(String namaUser, String noTelp, Integer role, String username, String password, Integer status, MultipartFile foto) {
         // validasi user duplikat ketika create
-        if (user == null || user.getNama_user().isBlank()|| user.getRole().isBlank()|| user.getUsername().isBlank()|| user.getPassword().isBlank()|| user.getNo_telp().isBlank()) {
+        if (namaUser == null || namaUser.isBlank() || noTelp == null || noTelp.isBlank() ||
+                role == null || username == null || username.isBlank() || password == null || password.isBlank()) {
             return new DtoResponse(400, null, mNullReq);
         }
 
+        // Validasi duplikat username
         for (User existingUser : userRepository.findAll()) {
-            if (existingUser.getUsername().equals(user.getUsername())) {
+            if (existingUser.getUsername().equals(username)) {
                 return new DtoResponse(400, null, mDuplicateUser);
             }
         }
+
         try {
-            // Enkripsi kata password sebelum disimpan
-            String encryptedPassword = passwordEncoder.encode(user.getPassword());
-            user.setPassword(encryptedPassword);
-            user.setStatus("1");
+            // Enkripsi kata sandi sebelum disimpan
+            String encryptedPassword = passwordEncoder.encode(password);
+
+            byte[] imageData = null; // Inisialisasi imageData dengan null
+
+            // Periksa apakah ada foto yang dikirimkan
+            if (foto != null && !foto.isEmpty()) {
+                imageData = foto.getBytes();
+            }
+
+            // Buat objek user baru
+            User user = new User(null, namaUser, noTelp, role, username, encryptedPassword, status, imageData);
+            user.setStatus(1);
             userRepository.save(user);
             return new DtoResponse(200, user, mCreateSuccess);
         } catch (Exception e) {
-            return new DtoResponse(500, user, mCreateFailed);
+            return new DtoResponse(500, null, mCreateFailed);
         }
     }
 
     @Override
-    public DtoResponse updateUser(User user) {
-        if (user == null || user.getNama_user().isBlank()|| user.getRole().isBlank()|| user.getUsername().isBlank()|| user.getPassword().isBlank()|| user.getNo_telp().isBlank()) {
+    public DtoResponse updateUser(Integer idUser, String namaUser, String noTelp, Integer role, String username, String password, Integer status, MultipartFile foto) {
+        if (namaUser == null || namaUser.isBlank() || noTelp == null || noTelp.isBlank() ||
+                role == null || username == null || username.isBlank() || password == null || password.isBlank()) {
             return new DtoResponse(400, null, mNullReq);
         }
 
         // Cari user yang sudah ada dalam database
-        User existingUser = userRepository.findById(user.getId_user()).orElse(null);
-        if (existingUser == null) {
+        Optional<User> existingUserOptional = userRepository.findById(idUser);
+        if (!existingUserOptional.isPresent()) {
             return new DtoResponse(404, null, mNotFound);
+        }
+        User existingUser = existingUserOptional.get();
+
+        // Periksa apakah ada foto baru yang dikirimkan
+        if (foto != null && !foto.isEmpty()) {
+            try {
+                byte[] imageData = foto.getBytes();
+                existingUser.setFoto(imageData);
+            } catch (IOException e) {
+                return new DtoResponse(500, null, mUpdateFailed);
+            }
+        } else {
+            // Jika tidak ada foto yang dikirimkan, hapus foto dari pengguna yang ada
+            existingUser.setFoto(null);
         }
 
         // Periksa username ada dalam database
-        if (!existingUser.getUsername().equals(user.getUsername())) {
+        if (!existingUser.getUsername().equals(username)) {
             // Validasi user duplikat ketika update
             for (User checkUser : userRepository.findAll()) {
-                if (checkUser.getUsername().equals(user.getUsername())) {
+                if (checkUser.getUsername().equals(username)) {
                     return new DtoResponse(400, null, mDuplicateUser);
                 }
             }
         }
+
+        String encryptedPassword = passwordEncoder.encode(password);
+
+        existingUser.setNama_user(namaUser);
+        existingUser.setNo_telp(noTelp);
+        existingUser.setRole(role);
+        existingUser.setUsername(username);
+        existingUser.setPassword(encryptedPassword);
+
         try {
-            // Enkripsi kata password jika ada perubahan kata sandi
-            /*String existingPassword = userRepository.findById(user.getId_user()).map(User::getPassword).orElse(null);
-            if (existingPassword != null && !existingPassword.equals(user.getPassword())) {
-                String encryptedPassword = hashPassword(user.getPassword());
-                user.setPassword(encryptedPassword);
-            }*/
-            User updatedUser = userRepository.save(user);
+            User updatedUser = userRepository.save(existingUser);
             if (updatedUser != null)
                 return new DtoResponse(200, updatedUser, mUpdateSuccess);
             else
@@ -138,7 +170,7 @@ public class UserServiceImpl implements UserService {
             if (optionalUser.isPresent()) {
                 User existingUser = optionalUser.get();
 
-                existingUser.setStatus("0");
+                existingUser.setStatus(0);
 
                 User deleteUser = userRepository.save(existingUser);
                 return new DtoResponse(200, deleteUser, mDeleteSuccess);
@@ -168,7 +200,7 @@ public class UserServiceImpl implements UserService {
                         Map<String, String> userMap = new HashMap<>();
                         userMap.put("id", user1.getId_user().toString());
                         userMap.put("name", user1.getNama_user());
-                        userMap.put("role", user1.getRole());
+                        userMap.put("role", String.valueOf(user1.getRole()));
                         result.add(userMap);
                         return new DtoResponse(200, result, mLoginSuccess);
                     } else {
@@ -197,5 +229,17 @@ public class UserServiceImpl implements UserService {
     public DtoResponse findUserById(int id) {
         if (userDao.findUserById(id) != null) return new DtoResponse(200, userDao.findUserById(id));
         return new DtoResponse(200, null, mEmptyData);
+    }
+
+    @Override
+    public byte[] getGambarById(int id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            return user.getFoto();
+        } else {
+            // Handle case where obat with the given ID is not found
+            return null;
+        }
     }
 }

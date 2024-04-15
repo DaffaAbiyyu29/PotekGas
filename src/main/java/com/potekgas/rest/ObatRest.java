@@ -54,34 +54,9 @@ public class ObatRest {
                                   @RequestParam("stok") Integer stok,
                                   @RequestParam("keterangan") String keterangan,
                                   @RequestParam("status") Integer status,
-                                  @RequestParam("gambar") MultipartFile gambar) {
+                                  @RequestParam(value = "gambar", required = false) MultipartFile gambar) {
         // Meneruskan nilai parameter yang diperlukan ke metode saveObat
         return obatService.saveObat(namaObat, merkObat, jenisObat, tglKadaluarsa, harga, stok, keterangan, status, gambar);
-    }
-
-    @PostMapping("/saveObatt")
-    public DtoResponse createObat(@RequestParam("namaObat") String namaObat,
-                                  @RequestParam("merkObat") String merkObat,
-                                  @RequestParam("jenisObat") String jenisObat,
-                                  @RequestParam("tglKadaluarsa") @DateTimeFormat(pattern = "yyyy-MM-dd") Date tglKadaluarsa,
-                                  @RequestParam("harga") Float harga,
-                                  @RequestParam("stok") Integer stok,
-                                  @RequestParam("keterangan") String keterangan,
-                                  @RequestParam("status") Integer status) {
-        // Meneruskan nilai parameter yang diperlukan ke metode saveObat
-        return obatService.saveObat(namaObat, merkObat, jenisObat, tglKadaluarsa, harga, stok, keterangan, status);
-    }
-
-    @GetMapping("/gambar/{id}")
-    public ResponseEntity<byte[]> getGambarObat(@PathVariable int id) {
-        // Dapatkan gambar berdasarkan ID obat dari repository atau penyimpanan gambar
-        byte[] gambar = obatService.getGambarById(id);
-
-        // Buat ResponseEntity untuk mengirimkan gambar sebagai byte array
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_JPEG); // Sesuaikan dengan tipe media gambar yang digunakan
-        headers.setContentLength(gambar.length);
-        return new ResponseEntity<>(gambar, headers, HttpStatus.OK);
     }
 
     @PostMapping("/updateObat")
@@ -95,24 +70,25 @@ public class ObatRest {
             @RequestParam("stok") Integer stok,
             @RequestParam("keterangan") String keterangan,
             @RequestParam("status") Integer status,
-            @RequestParam("gambar") MultipartFile gambar) {
+            @RequestParam(value = "gambar", required = false) MultipartFile gambar) {
 
         return obatService.updateObat(idObat, namaObat, merkObat, jenisObat, tglKadaluarsa, harga, stok, keterangan, status, gambar);
     }
 
-    @PostMapping("/updateObatt")
-    public DtoResponse updateObat(
-            @RequestParam("idObat") Integer idObat,
-            @RequestParam("namaObat") String namaObat,
-            @RequestParam("merkObat") String merkObat,
-            @RequestParam("jenisObat") String jenisObat,
-            @RequestParam("tglKadaluarsa") @DateTimeFormat(pattern = "yyyy-MM-dd") Date tglKadaluarsa,
-            @RequestParam("harga") Float harga,
-            @RequestParam("stok") Integer stok,
-            @RequestParam("keterangan") String keterangan,
-            @RequestParam("status") Integer status){
+    @GetMapping("/gambar/{id}")
+    public ResponseEntity<byte[]> getGambarObat(@PathVariable int id) {
+        try {
+            // Dapatkan gambar berdasarkan ID obat dari repository atau penyimpanan gambar
+            byte[] gambar = obatService.getGambarById(id);
 
-        return obatService.updateObat(idObat, namaObat, merkObat, jenisObat, tglKadaluarsa, harga, stok, keterangan, status);
+            // Buat ResponseEntity untuk mengirimkan gambar sebagai byte array
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_JPEG); // Sesuaikan dengan tipe media gambar yang digunakan
+            headers.setContentLength(gambar.length);
+            return new ResponseEntity<>(gambar, headers, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
     }
 
     @PostMapping("/deleteObat")

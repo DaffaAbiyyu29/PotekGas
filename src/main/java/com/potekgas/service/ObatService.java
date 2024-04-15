@@ -12,9 +12,7 @@ public interface ObatService {
     DtoResponse countObat();
     DtoResponse getObatById(int id);
     DtoResponse saveObat(String namaObat, String merkObat, String jenisObat, Date tglKadaluarsa, Float harga, Integer stok, String keterangan, Integer status, MultipartFile gambar);
-    DtoResponse saveObat(String namaObat, String merkObat, String jenisObat, Date tglKadaluarsa, Float harga, Integer stok, String keterangan, Integer status);
     DtoResponse updateObat(Integer idObat, String namaObat, String merkObat, String jenisObat, Date tglKadaluarsa, Float harga, Integer stok, String keterangan, Integer status, MultipartFile gambar);
-    DtoResponse updateObat(Integer idObat, String namaObat, String merkObat, String jenisObat, Date tglKadaluarsa, Float harga, Integer stok, String keterangan, Integer status);
     DtoResponse deleteObat(Obat obat);
     public byte[] getGambarById(int id);
 }

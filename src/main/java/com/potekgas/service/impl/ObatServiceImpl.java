@@ -73,6 +73,7 @@ public class ObatServiceImpl implements ObatService{
         }
     }
 
+    @Override
     public DtoResponse saveObat(String namaObat, String merkObat, String jenisObat, Date tglKadaluarsa, Float harga, Integer stok, String keterangan, Integer status, MultipartFile gambar) {
         // Validasi obat duplikat ketika create
         if (namaObat == null || namaObat.isBlank() || merkObat == null || merkObat.isBlank() || jenisObat == null || jenisObat.isBlank() ||
@@ -87,9 +88,12 @@ public class ObatServiceImpl implements ObatService{
         }
 
         try {
-            // Konversi gambar menjadi data biner
-            byte[] imageData = gambar.getBytes();
-            byte[] imageDataString = Base64.getEncoder().encodeToString(imageData).getBytes();
+            byte[] imageData = null;
+            // Periksa apakah ada gambar yang dikirimkan
+            if (gambar != null && !gambar.isEmpty()) {
+                // Jika ada gambar, ambil data biner dari gambar
+                imageData = gambar.getBytes();
+            }
 
             Obat obat = new Obat(namaObat, merkObat, jenisObat, tglKadaluarsa, harga, stok, keterangan, status, imageData);
             obat.setStatus(1);
@@ -99,30 +103,6 @@ public class ObatServiceImpl implements ObatService{
             return new DtoResponse(500, null, mCreateFailed);
         }
     }
-
-    public DtoResponse saveObat(String namaObat, String merkObat, String jenisObat, Date tglKadaluarsa, Float harga, Integer stok, String keterangan, Integer status) {
-        // Validasi obat duplikat ketika create
-        if (namaObat == null || namaObat.isBlank() || merkObat == null || merkObat.isBlank() || jenisObat == null || jenisObat.isBlank() ||
-                harga == 0 || tglKadaluarsa.toString() == "0001-01-01" || stok == 0 || keterangan == null || keterangan.isBlank()) {
-            return new DtoResponse(400, null, mNullReq);
-        }
-
-        for (Obat existingObat : obatRepository.findAll()) {
-            if (existingObat.getNama_obat().equals(namaObat)) {
-                return new DtoResponse(400, null, mDuplicateObat);
-            }
-        }
-
-        try {
-            Obat obat = new Obat(null, namaObat, merkObat, jenisObat, tglKadaluarsa, harga, stok, keterangan, status);
-            obat.setStatus(1);
-            obatRepository.save(obat);
-            return new DtoResponse(200, obat, mCreateSuccess);
-        } catch (Exception e) {
-            return new DtoResponse(500, null, mCreateFailed);
-        }
-    }
-
 
     @Override
     public DtoResponse updateObat(Integer idObat, String namaObat, String merkObat, String jenisObat, Date tglKadaluarsa, Float harga, Integer stok, String keterangan, Integer status, MultipartFile gambar) {
@@ -139,7 +119,6 @@ public class ObatServiceImpl implements ObatService{
         }
         Obat existingObat = existingObatOptional.get();
 
-        // Periksa apakah ada gambar baru yang dikirimkan
         if (gambar != null && !gambar.isEmpty()) {
             try {
                 byte[] imageData = gambar.getBytes();
@@ -147,53 +126,10 @@ public class ObatServiceImpl implements ObatService{
             } catch (IOException e) {
                 return new DtoResponse(500, null, mUpdateFailed);
             }
+        } else {
+            // Jika tidak ada gambar yang dikirimkan, atur gambar ke null
+            existingObat.setGambar(null);
         }
-
-        // Periksa apakah nama obat telah berubah
-        if (!existingObat.getNama_obat().equals(namaObat)) {
-            for (Obat checkObat : obatRepository.findAll()) {
-                if (checkObat.getNama_obat().equals(namaObat)) {
-                    return new DtoResponse(400, null, mDuplicateObat);
-                }
-            }
-        }
-
-        // Perbarui data obat yang ada
-        existingObat.setNama_obat(namaObat);
-        existingObat.setMerk_obat(merkObat);
-        existingObat.setJenis_obat(jenisObat);
-        existingObat.setTgl_kadaluarsa(tglKadaluarsa);
-        existingObat.setHarga(harga);
-        existingObat.setStok(stok);
-        existingObat.setKeterangan(keterangan);
-
-        // Simpan data obat yang diperbarui
-        try {
-            Obat updatedObat = obatRepository.save(existingObat);
-            if (updatedObat != null) {
-                return new DtoResponse(200, updatedObat, mUpdateSuccess);
-            } else {
-                return new DtoResponse(404, null, mNotFound);
-            }
-        } catch (Exception e) {
-            return new DtoResponse(500, null, mUpdateFailed);
-        }
-    }
-
-    @Override
-    public DtoResponse updateObat(Integer idObat, String namaObat, String merkObat, String jenisObat, Date tglKadaluarsa, Float harga, Integer stok, String keterangan, Integer status) {
-        // Periksa apakah parameter yang diberikan valid
-        if (namaObat == null || namaObat.isBlank() || merkObat == null || merkObat.isBlank() || jenisObat == null || jenisObat.isBlank() ||
-                harga == null || tglKadaluarsa == null || stok == null || keterangan == null || keterangan.isBlank()) {
-            return new DtoResponse(400, null, mNullReq);
-        }
-
-        // Cari obat yang sudah ada dalam database
-        Optional<Obat> existingObatOptional = obatRepository.findById(idObat);
-        if (!existingObatOptional.isPresent()) {
-            return new DtoResponse(404, null, mNotFound);
-        }
-        Obat existingObat = existingObatOptional.get();
 
         // Periksa apakah nama obat telah berubah
         if (!existingObat.getNama_obat().equals(namaObat)) {

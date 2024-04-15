@@ -35,6 +35,12 @@ public class UserDaoImpl implements UserDao {
             } else if("1".equals(userVo.getStatus())) {
                 userVo.setStatus("Aktif");
             }
+
+            if (item.getId_user() != null) {
+                String foto = "http://localhost:8083/users/foto/" + item.getId_user();
+                userVo.setFoto(foto);
+            }
+
             userVos.add(userVo);
         }
         return userVos;
@@ -56,7 +62,16 @@ public class UserDaoImpl implements UserDao {
                 userVo.setStatus("Tidak Aktif");
             } else if("1".equals(userVo.getStatus())) {
                 userVo.setStatus("Aktif");
+            }if (item.getId_user() != null) {
+                String foto = "http://localhost:8083/users/foto/" + item.getId_user();
+                userVo.setFoto(foto);
             }
+
+            if (item.getId_user() != null) {
+                String foto = "http://localhost:8083/users/foto/" + item.getId_user();
+                userVo.setFoto(foto);
+            }
+
             userVos.add(userVo);
         }
         return userVos;
