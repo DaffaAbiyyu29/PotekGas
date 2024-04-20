@@ -95,4 +95,9 @@ public class ObatRest {
     public DtoResponse deleteObat(@RequestBody Obat obat) {
         return obatService.deleteObat(obat);
     }
+
+    @PostMapping("/kurangiStock/{idObat}/jumlah/{jumlahPemakaian}")
+    public DtoResponse kurangiStock(@PathVariable("idObat") int idObat, @PathVariable("jumlahPemakaian") int jumlahPemakaian) {
+        return obatService.kurangiStokObat(idObat, jumlahPemakaian);
+    }
 }

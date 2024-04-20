@@ -100,4 +100,14 @@ public class ObatDaoImpl implements ObatDao {
         });
         return obatVos;
     }
+
+    @Override
+    public boolean kurangiStokObat(int idObat, int jumlahPemakaian) {
+        try {
+            obatRepository.kurangiStokObat(idObat, jumlahPemakaian);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

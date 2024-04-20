@@ -193,4 +193,9 @@ public class ObatServiceImpl implements ObatService{
             return null;
         }
     }
+
+    @Override
+    public DtoResponse kurangiStokObat(int idObat, int jumlahPemakaian) {
+        return new DtoResponse(200, obatDao.kurangiStokObat(idObat,jumlahPemakaian));
+    }
 }

@@ -15,4 +15,5 @@ public interface ObatService {
     DtoResponse updateObat(Integer idObat, String namaObat, String merkObat, String jenisObat, Date tglKadaluarsa, Float harga, Integer stok, String keterangan, Integer status, MultipartFile gambar);
     DtoResponse deleteObat(Obat obat);
     public byte[] getGambarById(int id);
+    DtoResponse kurangiStokObat(int idObat, int jumlahPemakaian);
 }

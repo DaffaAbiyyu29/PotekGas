@@ -10,4 +10,6 @@ public interface ObatDao {
     List<ObatVo> getObatActive();
     ArrayList countObat();
     List<ObatVo> getObatById(int id);
+    boolean kurangiStokObat(int idObat, int jumlahPemakaian);
+
 }
