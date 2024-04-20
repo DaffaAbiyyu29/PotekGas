@@ -65,6 +65,11 @@ public class DetailPembelianServiceImpl implements DetailPembelianService {
                     return new DtoResponse(404, null, mEmptyObat);
                 }
 
+                // Validasi jika stok obat kurang dari jumlah yang akan dibeli
+                if (existingObat.getStok() < detailPembelianVo.getJumlah()) {
+                    return new DtoResponse(400, null, "Stok obat tidak mencukupi untuk pembelian ini");
+                }
+
                 // Mengurangi stok obat
                 existingObat.setStok(existingObat.getStok() - detailPembelianVo.getJumlah());
                 obatRepository.save(existingObat);
