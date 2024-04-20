@@ -52,6 +52,13 @@ public class DetailPembelianServiceImpl implements DetailPembelianService {
                 detailPembelianPK.setId_transaksi(detailPembelianVo.getIdTransaksi());
                 detailPembelianPK.setId_obat(detailPembelianVo.getIdObat());
 
+//                List<DetailPembelianVo> listData = detailPembelianDao.getAllDetailPembelian();
+//                if (listData.isEmpty()) {
+//                    detailPembelianPK.setId_detail(1);
+//                } else {
+//                    DetailPembelianVo lastData = listData.get(listData.size() - 1);
+//                    detailPembelianPK.setId_detail(lastData.getIdDetail() + 1);
+//                }
                 // Mendapatkan data obat dari repository
                 Obat existingObat = obatRepository.findById(detailPembelianVo.getIdObat()).orElse(null);
                 if (existingObat == null) {
@@ -62,10 +69,19 @@ public class DetailPembelianServiceImpl implements DetailPembelianService {
                 existingObat.setStok(existingObat.getStok() - detailPembelianVo.getJumlah());
                 obatRepository.save(existingObat);
 
-                // Simpan detail pembelian
+                ArrayList<Integer> findLastIdDetail = detailPembelianDao.findLastIdDetail();
+                System.out.println("id : "+findLastIdDetail.get(0));
+                if (findLastIdDetail.get(0) == null) {
+                    detailPembelianPK.setId_detail(1);
+                } else {
+                    detailPembelianPK.setId_detail(findLastIdDetail.get(0) + 1);
+                }
+
+
                 DetailPembelian detailPembelian = new DetailPembelian();
                 detailPembelian.setDetailPembelianPK(detailPembelianPK);
                 detailPembelian.setJumlah(detailPembelianVo.getJumlah());
+
                 detailPembelianRepository.save(detailPembelian);
             }
             return new DtoResponse(200, detailPembelianList, mCreateSuccess);
