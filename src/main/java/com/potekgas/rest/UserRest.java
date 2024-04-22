@@ -107,7 +107,7 @@ public class UserRest {
         return userService.loginUser(user);
     }
 
-    @PostMapping("/decodeToken")
+    @GetMapping("/decodeToken")
     public DtoResponse decodeToken(@RequestParam String token) {
         return userService.decodeToken(token);
     }

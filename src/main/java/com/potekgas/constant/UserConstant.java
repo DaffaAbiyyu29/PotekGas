@@ -13,6 +13,7 @@ public class UserConstant {
     public static final String mDeleteFailed = "Failed to delete User";
     public static final String mLoginFailed = "Login Failed";
     public static final String mLoginSuccess = "Login Success";
+    public static final String mUnauthorized = "Unauthorized";
     public static final String mPasswordFailed = "Password Not Match";
     public static final String mUsernameFailed = "Username not Exits";
     public static final String mBlank = "Please Insert the Username and Password";

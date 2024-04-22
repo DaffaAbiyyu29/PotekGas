@@ -256,6 +256,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public DtoResponse decodeToken(String token) {
-        return new DtoResponse(200, tokenService.getTokenInfo(token), mLoginSuccess);
+        ArrayList checkToken = tokenService.getTokenInfo(token);
+        if (checkToken.contains("Token Expired") || checkToken.contains("Invalid Token")){
+            return new DtoResponse(401, checkToken, mUnauthorized);
+        } else {
+            return new DtoResponse(200, checkToken, mLoginSuccess);
+        }
     }
 }

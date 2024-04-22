@@ -1,16 +1,16 @@
 package com.potekgas.token;
 
 import com.potekgas.model.User;
-import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class TokenService {
@@ -51,7 +51,7 @@ public class TokenService {
     public String generateToken(User user) {
         Date now = new Date();
         // Menghitung waktu kedaluwarsa menjadi 90 menit dari waktu sekarang
-        long expiryMilliseconds = now.getTime() + 45 * 60 * 1000;
+        long expiryMilliseconds = now.getTime() + 1 * 60 * 1000;
         Date expiryDate = new Date(expiryMilliseconds);
 
         return Jwts.builder()
@@ -73,25 +73,29 @@ public class TokenService {
             String name = claims.get("name", String.class); // Mengambil nama pengguna dalam format String
             Long role = claims.get("role", Long.class); // Mengambil peran pengguna dalam format Long
 
-            // Memeriksa apakah signature valid
-            boolean signatureValid = true;
             // Memeriksa apakah token expired
             boolean tokenExpired = claims.getExpiration().before(new Date());
+            boolean tokenValid = !tokenExpired;
 
             ArrayList<Object> tokenInfo = new ArrayList<>();
-            tokenInfo.add(userId);
-            tokenInfo.add(name);
-            tokenInfo.add(role);
-            tokenInfo.add(signatureValid);
-            tokenInfo.add(tokenExpired);
+            Map<String, Object> userData = new HashMap<>();
+            userData.put("id", userId);
+            userData.put("name", name);
+            userData.put("role", role);
+            userData.put("tokenValid", tokenValid);
+            tokenInfo.add(userData);
 
             return tokenInfo;
-        } catch (Exception e) {
-            // Jika terjadi kesalahan dalam verifikasi token
+        } catch (ExpiredJwtException expiredException) {
+            // Tangani jika token telah kedaluwarsa
             ArrayList<Object> errorInfo = new ArrayList<>();
-            errorInfo.add("error");
+            errorInfo.add("Token Expired");
+            return errorInfo;
+        } catch (JwtException e) {
+            // Tangani jika terjadi kesalahan lain dalam verifikasi token
+            ArrayList<Object> errorInfo = new ArrayList<>();
+            errorInfo.add("Invalid Token");
             return errorInfo;
         }
     }
-
 }
