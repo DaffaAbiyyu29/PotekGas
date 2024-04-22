@@ -6,6 +6,7 @@ import com.potekgas.model.User;
 import com.potekgas.repository.UserRepository;
 import com.potekgas.response.DtoResponse;
 import com.potekgas.service.UserService;
+import com.potekgas.token.TokenService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,6 +33,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private TokenService tokenService;
 
     @Override
     public DtoResponse getAllUsers() {
@@ -196,11 +200,13 @@ public class UserServiceImpl implements UserService {
                     boolean isPwdRight = passwordEncoder.matches(password, encodedPassword);
                     if (isPwdRight) {
                         List<Map<String, String>> result = new ArrayList<>();
+                        String token = tokenService.generateToken(user1);
 
                         Map<String, String> userMap = new HashMap<>();
                         userMap.put("id", user1.getId_user().toString());
                         userMap.put("name", user1.getNama_user());
                         userMap.put("role", String.valueOf(user1.getRole()));
+                        userMap.put("token", token);
                         result.add(userMap);
                         return new DtoResponse(200, result, mLoginSuccess);
                     } else {
@@ -211,7 +217,7 @@ public class UserServiceImpl implements UserService {
                 }
             }
         } catch (Exception e) {
-            return new DtoResponse(500, null, mLoginFailed);
+            return new DtoResponse(500, null, mLoginFailed + " : " +e.toString());
         }
     }
 
@@ -241,5 +247,15 @@ public class UserServiceImpl implements UserService {
             // Handle case where obat with the given ID is not found
             return null;
         }
+    }
+
+    @Override
+    public DtoResponse generateToken(User user) {
+        return new DtoResponse(200, tokenService.generateToken(user), "Success");
+    }
+
+    @Override
+    public DtoResponse decodeToken(String token) {
+        return new DtoResponse(200, tokenService.getTokenInfo(token), mLoginSuccess);
     }
 }

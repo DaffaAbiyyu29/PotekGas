@@ -15,5 +15,7 @@ public interface UserService {
     DtoResponse updateUser(Integer idUser, String namaUser, String noTelp, Integer role, String username, String password, Integer status, MultipartFile foto);
     DtoResponse deleteUser(User user);
     DtoResponse loginUser(User user);
+    DtoResponse generateToken(User user);
+    DtoResponse decodeToken(String token);
     public byte[] getGambarById(int id);
 }
