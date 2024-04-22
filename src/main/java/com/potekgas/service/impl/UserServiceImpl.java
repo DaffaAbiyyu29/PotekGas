@@ -149,7 +149,7 @@ public class UserServiceImpl implements UserService {
         existingUser.setNo_telp(noTelp);
         existingUser.setRole(role);
         existingUser.setUsername(username);
-        existingUser.setPassword(encryptedPassword);
+        existingUser.setPassword(existingUser.getPassword());
 
         try {
             User updatedUser = userRepository.save(existingUser);
