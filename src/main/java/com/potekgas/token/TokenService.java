@@ -51,7 +51,7 @@ public class TokenService {
     public String generateToken(User user) {
         Date now = new Date();
         // Menghitung waktu kedaluwarsa menjadi 90 menit dari waktu sekarang
-        long expiryMilliseconds = now.getTime() + 1 * 60 * 1000;
+        long expiryMilliseconds = now.getTime() + 60 * 60 * 1000;
         Date expiryDate = new Date(expiryMilliseconds);
 
         return Jwts.builder()
