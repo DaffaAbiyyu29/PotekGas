@@ -128,7 +128,7 @@ public class ObatServiceImpl implements ObatService{
             }
         } else {
             // Jika tidak ada gambar yang dikirimkan, atur gambar ke null
-            existingObat.setGambar(null);
+            existingObat.setGambar(existingObat.getGambar());
         }
 
         // Periksa apakah nama obat telah berubah

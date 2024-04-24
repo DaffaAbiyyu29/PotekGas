@@ -134,7 +134,7 @@ public class UserServiceImpl implements UserService {
             }
         } else {
             // Jika tidak ada foto yang dikirimkan, hapus foto dari pengguna yang ada
-            existingUser.setFoto(null);
+            existingUser.setFoto(existingUser.getFoto());
         }
 
         // Periksa username ada dalam database
